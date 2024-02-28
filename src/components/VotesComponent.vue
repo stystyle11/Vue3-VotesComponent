@@ -3,7 +3,7 @@ import { ref } from 'vue'
 
 import { useVotingStore } from '@/stores/voting'
 import { storeToRefs } from 'pinia'
-import image from '@/assets/img/thumbs-down.svg'
+
 const { votingData } = storeToRefs(useVotingStore())
 </script>
 <template>
@@ -22,6 +22,7 @@ const { votingData } = storeToRefs(useVotingStore())
       <button class="icon-button" aria-label="thumbs down">
         <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
       </button>
+      <button class="vote-button">Vote Now</button>
     </div>
 
     <div class="hero__closing-gauge">
@@ -36,4 +37,12 @@ const { votingData } = storeToRefs(useVotingStore())
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.vote-button {
+  background-color: #525252b6;
+  color: white;
+  border: 5px solid white;
+  width: 30%;
+  font-size: 1rem;
+}
+</style>
