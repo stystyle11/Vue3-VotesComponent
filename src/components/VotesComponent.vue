@@ -59,6 +59,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
         <button class="vote-button">Vote Now</button>
       </div>
       <div class="voting-stats">
+        <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
         <div
           class="voting-positive"
           :style="{
@@ -78,6 +79,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
             ) + '%'
           }}
         </div>
+
         <div
           class="voting-negative"
           :style="{
@@ -97,6 +99,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
             ) + '%'
           }}
         </div>
+        <img src="@/assets/img/thumbs-down.svg" alt="thumbs up" />
       </div>
     </div>
   </div>
@@ -105,7 +108,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 <style scoped>
 .voting-wrapper {
   width: 100%;
-  background-color: aqua;
+
   margin: 1em 0;
 }
 .picture-img {
