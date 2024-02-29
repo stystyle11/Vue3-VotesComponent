@@ -31,87 +31,91 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 }
 </script>
 <template>
-  <div v-for="vote in votingData" :key="vote.name" class="voting-wrapper">
+  <div v-for="vote in votingData" :key="vote.name" class="content-wrapper">
     <div
-      class="picture-img"
+      class="content-wrapper__background"
       :style="{ backgroundImage: `url(${vote.picture})` }"
     >
-      <h2 class="featured-card__title">{{ vote.name }}</h2>
+      <div class="content-wrapper__design">
+        <h2 class="content-wrapper__title">
+          {{ vote.name }}
+        </h2>
 
-      <p class="featured-card__desc">
-        {{ vote.description }}
-      </p>
-      <!--
-      <div
+        <p class="content-wrapper__description">
+          {{ vote.description }}
+        </p>
+        <!--
+        < div
         class="picture-img"
         :style="{ backgroundImage: 'url( ${vote.picture} )' }"
-      >
-        <img :src="`${vote.picture}`" alt="thumbs up" />
-      </div>
-      -->
-      <div class="middle-buttons">
-        <div class="middle-items">
-          <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
-        </div>
-        <div class="middle-items">
-          <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
-        </div>
-        <div class="middle-items">
-          <button class="vote-button">Vote Now</button>
-        </div>
-      </div>
-      <div class="voting-stats">
-        <div
-          class="voting-positive"
-          :style="{
-            width:
-              getPercentage(
-                vote.votes.negative,
-                vote.votes.positive,
-                vote.votes.positive
-              ) + '%'
-          }"
         >
-          <div class="flex-votes">
-            <div class="flex-positive">
-              <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
-            </div>
-            <div class="flex-positive">
-              {{
+        <img :src="`${vote.picture}`" alt="thumbs up" />
+        </>
+        -->
+        <div class="middle-buttons">
+          <div class="middle-items">
+            <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+          </div>
+          <div class="middle-items">
+            <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+          </div>
+          <div class="middle-items">
+            <button class="vote-button">Vote Now</button>
+          </div>
+        </div>
+        <div class="voting-stats">
+          <div
+            class="voting-positive"
+            :style="{
+              width:
                 getPercentage(
                   vote.votes.negative,
                   vote.votes.positive,
                   vote.votes.positive
                 ) + '%'
-              }}
+            }"
+          >
+            <div class="flex-votes">
+              <div class="flex-positive">
+                <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+              </div>
+              <div class="flex-positive">
+                {{
+                  getPercentage(
+                    vote.votes.negative,
+                    vote.votes.positive,
+                    vote.votes.positive
+                  ) + '%'
+                }}
+              </div>
             </div>
           </div>
-        </div>
 
-        <div
-          class="voting-negative"
-          :style="{
-            width:
-              getPercentage(
-                vote.votes.negative,
-                vote.votes.positive,
-                vote.votes.negative
-              ) + '%'
-          }"
-        >
-          <div class="flex-votes">
-            <div class="flex-negative">
-              {{
+          <div
+            class="voting-negative"
+            :style="{
+              width:
                 getPercentage(
                   vote.votes.negative,
                   vote.votes.positive,
                   vote.votes.negative
                 ) + '%'
-              }}
-            </div>
+            }"
+          >
+            <div class="flex-votes">
+              <div class="flex-negative">
+                {{
+                  getPercentage(
+                    vote.votes.negative,
+                    vote.votes.positive,
+                    vote.votes.negative
+                  ) + '%'
+                }}
+              </div>
 
-            <div class="flex-negative">
-              <img src="@/assets/img/thumbs-down.svg" alt="thumbs up" />
+              <div class="flex-negative">
+                <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+              </div>
             </div>
           </div>
         </div>
@@ -121,10 +125,39 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 </template>
 
 <style scoped>
-.voting-wrapper {
+/*
+featured-card__content
+*/
+.content-wrapper {
   width: 100%;
+  margin: 2em 0;
+}
+.content-wrapper__background {
+  width: 100%;
+  height: fit-content;
 
-  margin: 1em 0;
+  background-size: cover;
+  background-position: center;
+}
+.content-wrapper__design {
+  padding: 2em 0 0 0;
+  color: var(--color-white);
+}
+.content-wrapper__title {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 400;
+  line-height: 1;
+  padding: 3em 0 0 1em;
+  color: var(--color-white);
+}
+.content-wrapper__description {
+  display: inline-block;
+  height: 3rem;
+  width: 80%;
+  padding: 1em;
+
+  text-overflow: ellipsis;
 }
 .middle-buttons {
   display: flex;
@@ -153,13 +186,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   padding: 1em;
   background-color: rgba(var(--color-yellow-negative), 0.8);
 }
-.picture-img {
-  width: 100%;
-  height: 200px;
 
-  background-size: cover;
-  background-position: center;
-}
 .flex-votes {
   display: flex;
   align-items: center;
@@ -177,9 +204,10 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 .vote-button {
   background-color: #525252b6;
   color: white;
-  border: 5px solid white;
+  border: 2px solid white;
   width: 100%;
   font-size: 1rem;
+  padding: 1em;
 }
 .voting-stats {
   display: flex;
