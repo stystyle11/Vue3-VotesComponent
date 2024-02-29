@@ -32,60 +32,71 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 </script>
 <template>
   <div v-for="vote in votingData" :key="vote.name" class="voting-wrapper">
-    <h2 class="featured-card__title">{{ vote.name }}</h2>
+    <div
+      class="picture-img"
+      :style="{ backgroundImage: `url(${vote.picture})` }"
+    >
+      <h2 class="featured-card__title">{{ vote.name }}</h2>
 
-    <p class="featured-card__desc">
-      {{ vote.description }}
-    </p>
-    <img :src="`${vote.picture}`" alt="thumbs up" />
-
-    <div class="featured-card__buttons">
-      <button class="icon-button" aria-label="thumbs up">
-        <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
-      </button>
-      <button class="icon-button" aria-label="thumbs down">
-        <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
-      </button>
-      <button class="vote-button">Vote Now</button>
-    </div>
-    <div class="voting-stats">
+      <p class="featured-card__desc">
+        {{ vote.description }}
+      </p>
+      <!--
       <div
-        class="voting-positive"
-        :style="{
-          width:
+        class="picture-img"
+        :style="{ backgroundImage: 'url( ${vote.picture} )' }"
+      >
+        <img :src="`${vote.picture}`" alt="thumbs up" />
+      </div>
+      -->
+      <div class="featured-card__buttons">
+        <button class="icon-button" aria-label="thumbs up">
+          <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+        </button>
+        <button class="icon-button" aria-label="thumbs down">
+          <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+        </button>
+        <button class="vote-button">Vote Now</button>
+      </div>
+      <div class="voting-stats">
+        <div
+          class="voting-positive"
+          :style="{
+            width:
+              getPercentage(
+                vote.votes.negative,
+                vote.votes.positive,
+                vote.votes.positive
+              ) + '%'
+          }"
+        >
+          {{
             getPercentage(
               vote.votes.negative,
               vote.votes.positive,
               vote.votes.positive
             ) + '%'
-        }"
-      >
-        {{
-          getPercentage(
-            vote.votes.negative,
-            vote.votes.positive,
-            vote.votes.positive
-          ) + '%'
-        }}
-      </div>
-      <div
-        class="voting-negative"
-        :style="{
-          width:
+          }}
+        </div>
+        <div
+          class="voting-negative"
+          :style="{
+            width:
+              getPercentage(
+                vote.votes.negative,
+                vote.votes.positive,
+                vote.votes.negative
+              ) + '%'
+          }"
+        >
+          {{
             getPercentage(
               vote.votes.negative,
               vote.votes.positive,
               vote.votes.negative
             ) + '%'
-        }"
-      >
-        {{
-          getPercentage(
-            vote.votes.negative,
-            vote.votes.positive,
-            vote.votes.negative
-          ) + '%'
-        }}
+          }}
+        </div>
       </div>
     </div>
   </div>
@@ -95,6 +106,14 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 .voting-wrapper {
   width: 100%;
   background-color: aqua;
+  margin: 1em 0;
+}
+.picture-img {
+  width: 100%;
+  height: 200px;
+
+  background-size: cover;
+  background-position: center;
 }
 .vote-button {
   background-color: #525252b6;

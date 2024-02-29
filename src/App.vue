@@ -129,7 +129,7 @@ import VotesComponent from './components/VotesComponent.vue'
       </aside>
       <main role="main">
         <!-- Start: Implementation -->
-        <VotesComponent></VotesComponent>
+        <VotesComponent />
 
         👉 Your code goes here 👈
         <!-- End: Implementation -->
