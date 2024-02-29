@@ -31,7 +31,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 }
 </script>
 <template>
-  <div v-for="vote in votingData" :key="vote.name">
+  <div v-for="vote in votingData" :key="vote.name" class="voting-wrapper">
     <h2 class="featured-card__title">{{ vote.name }}</h2>
 
     <p class="featured-card__desc">
@@ -68,13 +68,34 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
           ) + '%'
         }}
       </div>
-      <div class="voting-negative"></div>
-      <span class="closing-gauge__desc">e</span>
+      <div
+        class="voting-negative"
+        :style="{
+          width:
+            getPercentage(
+              vote.votes.negative,
+              vote.votes.positive,
+              vote.votes.negative
+            ) + '%'
+        }"
+      >
+        {{
+          getPercentage(
+            vote.votes.negative,
+            vote.votes.positive,
+            vote.votes.negative
+          ) + '%'
+        }}
+      </div>
     </div>
   </div>
 </template>
 
 <style scoped>
+.voting-wrapper {
+  width: 100%;
+  background-color: aqua;
+}
 .vote-button {
   background-color: #525252b6;
   color: white;
@@ -90,5 +111,9 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 .voting-positive {
   height: 3rem;
   background-color: rgba(0, 128, 128, 0.758);
+}
+.voting-negative {
+  height: 3rem;
+  background-color: #c1923bbb;
 }
 </style>
