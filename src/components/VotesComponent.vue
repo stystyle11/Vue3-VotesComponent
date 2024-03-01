@@ -23,17 +23,17 @@ const { votingData } = storeToRefs(useVotingStore())
 
 const activePositiveButtonIndex = ref(null)
 const activeNegativeButtonIndex = ref(null)
-const allowToVote = ref(false)
+const allowToVote = ref(null)
 
 const togglePositiveButtonActive = (index: number | any) => {
   activeNegativeButtonIndex.value = null
   activePositiveButtonIndex.value = index
-  allowToVote.value = true
+  allowToVote.value = index
 }
 const toggleNegativeButtonActive = (index: number | any) => {
   activePositiveButtonIndex.value = null
   activeNegativeButtonIndex.value = index
-  allowToVote.value = true
+  allowToVote.value = index
 }
 // Date logic
 const compareDates = (lastDate: string) => {
@@ -144,7 +144,10 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
             </button>
           </div>
           <div class="middle-items">
-            <button class="vote-button" :class="{ disabled: !allowToVote }">
+            <button
+              class="vote-button"
+              :class="{ disabled: allowToVote !== index }"
+            >
               Vote Now
             </button>
           </div>
