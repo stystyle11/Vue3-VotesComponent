@@ -16,8 +16,17 @@ interface Votes {
     negative: number
   }
 }
+// Data from Pinia
 const { votingData } = storeToRefs(useVotingStore())
 
+// button login
+const positiveButtonActive = ref(false)
+const activeButtonIndex = ref(0)
+const togglePositiveButtonActive = (index: number) => {
+  console.log(positiveButtonActive.value)
+  activeButtonIndex.value = index
+}
+// Date logic
 const compareDates = (lastDate: string) => {
   const date = new Date(lastDate)
   console.log('date', date)
@@ -59,7 +68,11 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 </script>
 <template>
   <h1 class="main-title">Previous Rulings</h1>
-  <div v-for="vote in votingData" :key="vote.name" class="content-wrapper">
+  <div
+    v-for="(vote, index) in votingData"
+    :key="vote.name"
+    class="content-wrapper"
+  >
     <div
       class="content-wrapper__background"
       :style="{ backgroundImage: `url(${vote.picture})` }"
@@ -98,7 +111,11 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
         </p>
         <div class="middle-buttons">
           <div class="middle-items">
-            <button class="button-middle">
+            <button
+              class="button-middle"
+              :class="{ active: activeButtonIndex === index }"
+              @click="togglePositiveButtonActive(index)"
+            >
               <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
             </button>
           </div>
@@ -177,10 +194,12 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   width: 100%;
   margin: 2em 0;
 }
+
 .main-title {
   font-weight: 300;
   color: #464646;
 }
+
 .content-wrapper__background {
   width: 100%;
   height: fit-content;
@@ -188,10 +207,12 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   background-size: cover;
   background-position: center;
 }
+
 .content-wrapper__design {
   padding: 2em 0 0 0;
   color: var(--color-white);
 }
+
 .title-wrapper {
   display: flex;
   justify-content: flex-start;
@@ -199,6 +220,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   height: fit-content;
   padding: 3em 0 0 0;
 }
+
 .content-wrapper__title {
   margin: 0;
   font-size: 3rem;
@@ -207,15 +229,18 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 
   color: var(--color-white);
 }
+
 .content-wrapper__updated {
   padding-left: 30%;
 }
+
 .top-items {
   width: auto;
   align-items: center;
   justify-content: center;
   height: 100%;
 }
+
 .content-wrapper__description {
   display: block;
   white-space: nowrap;
@@ -229,6 +254,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   padding: 1em;
   text-overflow: ellipsis;
 }
+
 .middle-buttons {
   display: flex;
   justify-content: space-between;
@@ -238,11 +264,18 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   margin-bottom: 1em;
   margin-left: 4em;
 }
+
 .button-middle {
   padding: 0;
   margin: 0;
-  border: 0;
+  border: none;
+  background: none;
+}
+
+.active {
+  border: 3px solid white;
   background-color: transparent;
+  background-color: rgba(var(--color-green-positive), 1);
 }
 
 .middle-items {
@@ -251,12 +284,14 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 
   height: 100%;
 }
+
 .middle-items img[alt='thumbs up'],
 .top-items img[alt='thumbs up'] {
   padding: 1em;
 
   background-color: rgba(var(--color-green-positive), 1);
 }
+
 .middle-items img[alt='thumbs down'],
 .top-items img[alt='thumbs down'] {
   padding: 1em;
@@ -271,12 +306,15 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   font-size: 1.5rem;
   color: white;
 }
+
 .flex-positive {
   padding-left: 0.8em;
 }
+
 .flex-negative {
   padding-right: 0.8em;
 }
+
 .vote-button {
   background-color: #525252b6;
   color: white;
@@ -285,15 +323,18 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   font-size: 1rem;
   padding: 1em;
 }
+
 .voting-stats {
   display: flex;
   width: 100%;
   height: 3rem;
 }
+
 .voting-positive {
   height: 3rem;
   background-color: rgba(var(--color-green-positive), 0.7);
 }
+
 .voting-negative {
   height: 3rem;
   background-color: rgba(var(--color-yellow-negative), 0.7);
