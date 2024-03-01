@@ -5,5 +5,10 @@ import votingData from '@/data/data.json'
 export const useVotingStore = defineStore('voting', {
   state: () => ({
     votingData
-  })
+  }),
+  actions: {
+    addVotes(index, value) {
+      this.votingData[index].push({ ...value })
+    }
+  }
 })
