@@ -18,6 +18,10 @@ interface Votes {
 }
 const { votingData } = storeToRefs(useVotingStore())
 
+const checkMostVotesSymbol = (positive: number, negative: number) => {
+  return positive > negative ? true : false
+}
+
 const fullVotes = (a: number, b: number) => {
   return a + b
 }
@@ -25,7 +29,6 @@ const fullVotes = (a: number, b: number) => {
 const getPercentage = (a: number, b: number, actualVote: number) => {
   const allVotes = fullVotes(a, b)
 
-  console.log((actualVote / allVotes) * 100)
   const result = (actualVote / allVotes) * 100
   return result.toFixed(1)
 }
@@ -37,9 +40,22 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
       :style="{ backgroundImage: `url(${vote.picture})` }"
     >
       <div class="content-wrapper__design">
-        <h2 class="content-wrapper__title">
-          {{ vote.name }}
-        </h2>
+        <div class="title-wrapper">
+          <div
+            v-if="
+              checkMostVotesSymbol(vote.votes.positive, vote.votes.negative)
+            "
+            class="top-items"
+          >
+            <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+          </div>
+          <div v-else class="top-items">
+            <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+          </div>
+          <h2 class="content-wrapper__title">
+            {{ vote.name }}
+          </h2>
+        </div>
 
         <p class="content-wrapper__description">
           {{ vote.description }}
@@ -143,20 +159,38 @@ featured-card__content
   padding: 2em 0 0 0;
   color: var(--color-white);
 }
+.title-wrapper {
+  display: flex;
+  justify-content: flex-start;
+
+  height: fit-content;
+  padding: 3em 0 0 0;
+}
 .content-wrapper__title {
   margin: 0;
   font-size: 3rem;
   font-weight: 400;
   line-height: 1;
-  padding: 3em 0 0 1em;
+
   color: var(--color-white);
 }
+.top-items {
+  width: auto;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
 .content-wrapper__description {
-  display: inline-block;
-  height: 3rem;
-  width: 80%;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  max-height: 10.5rem;
+  margin: 1rem 0;
+  -webkit-box-orient: vertical;
+  font-size: 1.25rem;
+  font-weight: 400;
+  -webkit-line-clamp: 6;
   padding: 1em;
-
   text-overflow: ellipsis;
 }
 .middle-buttons {
@@ -169,20 +203,20 @@ featured-card__content
   margin-bottom: 1em;
 }
 .middle-items {
-  height: 100%;
-  padding-left: 0.5em;
   width: auto;
   align-items: center;
   justify-content: center;
   height: 100%;
   padding-left: 1.5em;
 }
-.middle-items img[alt='thumbs up'] {
+.middle-items img[alt='thumbs up'],
+.top-items img[alt='thumbs up'] {
   padding: 1em;
 
   background-color: rgba(var(--color-green-positive), 1);
 }
-.middle-items img[alt='thumbs down'] {
+.middle-items img[alt='thumbs down'],
+.top-items img[alt='thumbs down'] {
   padding: 1em;
   background-color: rgba(var(--color-yellow-negative), 0.8);
 }
@@ -216,10 +250,10 @@ featured-card__content
 }
 .voting-positive {
   height: 3rem;
-  background-color: rgba(var(--color-green-positive), 1);
+  background-color: rgba(var(--color-green-positive), 0.7);
 }
 .voting-negative {
   height: 3rem;
-  background-color: rgba(var(--color-yellow-negative), 0.8);
+  background-color: rgba(var(--color-yellow-negative), 0.7);
 }
 </style>
