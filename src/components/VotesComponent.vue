@@ -32,13 +32,13 @@ const compareDates = (lastDate: string) => {
 
   // Create a function / if statement or switch to return if it is days / months / year
   if (differenceInDays / 30 < 1) {
-    return differenceInDays + 'days ago'
+    return differenceInDays + ' days ago in '
   } else if (differenceInDays / 30 > 1 && differenceInDays / 30 < 12) {
-    return differenceInDays + 'months ago'
+    return differenceInDays + ' months ago in '
   } else {
     let years = differenceInDays / 365
 
-    return Math.floor(years) + 'years ago'
+    return Math.floor(years) + ' years ago in '
   }
 }
 
@@ -94,7 +94,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
         </>
         -->
         <p class="content-wrapper__updated">
-          {{ compareDates(vote.lastUpdated) }}
+          {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
         </p>
         <div class="middle-buttons">
           <div class="middle-items">
@@ -202,6 +202,9 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   line-height: 1;
 
   color: var(--color-white);
+}
+.content-wrapper__updated {
+  padding-left: 30%;
 }
 .top-items {
   width: auto;
