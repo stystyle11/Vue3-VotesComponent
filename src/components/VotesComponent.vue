@@ -19,6 +19,11 @@ interface Votes {
 // Data from Pinia
 const { votingData } = storeToRefs(useVotingStore())
 const votingStore = useVotingStore()
+
+//Has voted Logic
+
+const voteCasted = ref(false)
+
 // update votes in Pinia
 // If the active button has been pressed and active positive has a value
 // then store it in the positive votes, else store it in the negative votes
@@ -26,8 +31,10 @@ const votingStore = useVotingStore()
 const updateVotes = (index: number) => {
   if (activePositiveButtonIndex.value !== null) {
     votingStore.updatePositiveVotes(index, 1)
+    voteCasted.value = true
   } else {
     votingStore.updateNegativeVotes(index, 1)
+    voteCasted.value = true
   }
 }
 
@@ -130,10 +137,11 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
         <img :src="`${vote.picture}`" alt="thumbs up" />
         </>
         -->
-        <p class="content-wrapper__updated">
-          {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
-        </p>
-        <div class="middle-buttons">
+
+        <div v-if="!voteCasted" class="middle-buttons">
+          <p class="middle-buttons__updated">
+            {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
+          </p>
           <div class="middle-items">
             <button
               class="button-middle"
@@ -165,6 +173,25 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
               @click="updateVotes(index)"
             >
               Vote Now
+            </button>
+          </div>
+        </div>
+        <div v-else class="middle-buttons">
+          <p class="middle-buttons__updated">Thank you for your vote !</p>
+          <div class="middle-items"></div>
+
+          <div
+            class="middle-items"
+            :style="{
+              paddingLeft: '30%'
+            }"
+          >
+            <button
+              class="vote-button"
+              :class="{ disabled: allowToVote !== index }"
+              @click="updateVotes(index)"
+            >
+              Vote Again
             </button>
           </div>
         </div>
@@ -298,13 +325,19 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 
 .middle-buttons {
   display: flex;
-  justify-content: space-between;
-  width: 65%;
+
+  width: 85%;
   font-size: 1rem;
   height: 25%;
   min-height: 6em;
   margin-bottom: 1em;
-  margin-left: 4em;
+  padding-left: 4em;
+}
+p.middle-buttons__updated {
+  position: absolute;
+  margin-top: 0;
+  margin-left: 30%;
+  margin-bottom: 1em;
 }
 
 .button-middle {
@@ -325,8 +358,9 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 .middle-items {
   width: auto;
   align-self: center;
-
+  padding-left: 1em;
   height: 100%;
+  padding-top: 2em;
 }
 
 .middle-items img[alt='thumbs up'] {
@@ -363,12 +397,15 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 }
 
 .vote-button {
-  background-color: #525252b6;
+  background-color: #1e1e1eaf;
   color: white;
   border: 2px solid white;
   width: 100%;
   font-size: 1rem;
-  padding: 1em;
+  font-size: 1.2rem;
+  padding: 1em 2em;
+  font-weight: 400;
+  font: caption;
 }
 
 .voting-stats {
