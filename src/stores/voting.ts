@@ -7,6 +7,8 @@ export const useVotingStore = defineStore('voting', {
     votingData
   }),
   actions: {
+    // Create two actions follows the thought about active and negative index of the buttons
+    // and separate the logic, although it could be 1 function here and in the front.
     updatePositiveVotes(cardIndex: number, positiveVote: number) {
       const cardData = this.votingData[cardIndex]
       if (cardData) {

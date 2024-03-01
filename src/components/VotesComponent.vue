@@ -20,7 +20,9 @@ interface Votes {
 const { votingData } = storeToRefs(useVotingStore())
 const votingStore = useVotingStore()
 // update votes in Pinia
-
+// If the active button has been pressed and active positive has a value
+// then store it in the positive votes, else store it in the negative votes
+// making it two function in pinia, I only need to pass the data I will compute!
 const updateVotes = (index: number) => {
   if (activePositiveButtonIndex.value !== null) {
     votingStore.updatePositiveVotes(index, 1)
@@ -30,7 +32,7 @@ const updateVotes = (index: number) => {
 }
 
 // button login
-
+// Selected active and positive based on the index of the item clicked
 const activePositiveButtonIndex = ref(null)
 const activeNegativeButtonIndex = ref(null)
 const allowToVote = ref(null)
@@ -52,7 +54,7 @@ const compareDates = (lastDate: string) => {
   // Get todays date
   const currentDate = new Date()
 
-  // Calculate the difference in milliseconds between the dates
+  // Calculate the difference in milliseconds
   const differenceBetweenDates = currentDate - date
 
   // Convert milliseconds to days
@@ -70,14 +72,17 @@ const compareDates = (lastDate: string) => {
   }
 }
 
+// Check for who has more votes, negative or positive
+
 const checkMostVotesSymbol = (positive: number, negative: number) => {
   return positive > negative ? true : false
 }
 
+// get total number of votes
 const fullVotes = (a: number, b: number) => {
   return a + b
 }
-
+// The the percentage of the votes.
 const getPercentage = (a: number, b: number, actualVote: number) => {
   const allVotes = fullVotes(a, b)
 
@@ -154,7 +159,6 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
             </button>
           </div>
           <div class="middle-items">
-            Positive{{ vote.votes.positive }} Negative{{ vote.votes.negative }}
             <button
               class="vote-button"
               :class="{ disabled: allowToVote !== index }"
