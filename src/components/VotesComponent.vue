@@ -20,23 +20,10 @@ interface Votes {
 const { votingData } = storeToRefs(useVotingStore())
 const votingStore = useVotingStore()
 
-//Has voted Logic
-
-const voteCasted = ref(false)
-
 // update votes in Pinia
 // If the active button has been pressed and active positive has a value
 // then store it in the positive votes, else store it in the negative votes
 // making it two function in pinia, I only need to pass the data I will compute!
-const updateVotes = (index: number) => {
-  if (activePositiveButtonIndex.value !== null) {
-    votingStore.updatePositiveVotes(index, 1)
-    voteCasted.value = true
-  } else {
-    votingStore.updateNegativeVotes(index, 1)
-    voteCasted.value = true
-  }
-}
 
 // button login
 // Selected active and positive based on the index of the item clicked
@@ -96,6 +83,32 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   const result = (actualVote / allVotes) * 100
   return result.toFixed(1)
 }
+/*
+To avoid looping the array to check for buttons clicked
+We will create this before the component mounts
+*/
+const votesCasted = ref<Array<number>>([])
+
+const addingValuesToVotes = () =>
+  votingData.value.forEach(() => {
+    votesCasted.value.push(0)
+  })
+
+addingValuesToVotes()
+// Only the votes button clicked will dissapear
+const updateVotes = (index: number) => {
+  if (activePositiveButtonIndex.value !== null) {
+    votingStore.updatePositiveVotes(index, 1)
+    votesCasted.value[index] = 1
+  } else {
+    votingStore.updateNegativeVotes(index, 1)
+    votesCasted.value[index] = 1
+  }
+}
+// When the user clicks on the vote again button, his vote on that card will be reset to 0
+const resetVotes = (index: number) => {
+  votesCasted.value[index] = 0
+}
 </script>
 <template>
   <h1 class="main-title">Previous Rulings</h1>
@@ -138,7 +151,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
         </>
         -->
 
-        <div v-if="!voteCasted" class="middle-buttons">
+        <div v-if="!votesCasted[index]" class="middle-buttons">
           <p class="middle-buttons__updated">
             {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
           </p>
@@ -186,11 +199,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
               paddingLeft: '30%'
             }"
           >
-            <button
-              class="vote-button"
-              :class="{ disabled: allowToVote !== index }"
-              @click="updateVotes(index)"
-            >
+            <button class="vote-button" @click="resetVotes(index)">
               Vote Again
             </button>
           </div>
