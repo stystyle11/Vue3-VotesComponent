@@ -98,10 +98,14 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
         </p>
         <div class="middle-buttons">
           <div class="middle-items">
-            <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+            <button class="button-middle">
+              <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+            </button>
           </div>
           <div class="middle-items">
-            <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+            <button class="button-middle">
+              <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+            </button>
           </div>
           <div class="middle-items">
             <button class="vote-button">Vote Now</button>
@@ -227,19 +231,25 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 }
 .middle-buttons {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 90%;
+  justify-content: space-between;
+  width: 65%;
   font-size: 1rem;
   height: 20%;
   margin-bottom: 1em;
+  margin-left: 4em;
 }
+.button-middle {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  background-color: transparent;
+}
+
 .middle-items {
   width: auto;
-  align-items: center;
-  justify-content: center;
+  align-self: center;
+
   height: 100%;
-  padding-left: 1.5em;
 }
 .middle-items img[alt='thumbs up'],
 .top-items img[alt='thumbs up'] {
