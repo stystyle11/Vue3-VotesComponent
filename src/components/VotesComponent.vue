@@ -191,12 +191,11 @@ const resetVotes = (index: number) => {
         </div>
         <div v-else class="middle-buttons">
           <p class="middle-buttons__updated">Thank you for your vote !</p>
-          <div class="middle-items"></div>
 
           <div
             class="middle-items"
             :style="{
-              paddingLeft: '30%'
+              paddingLeft: '40%'
             }"
           >
             <button class="vote-button" @click="resetVotes(index)">
@@ -345,7 +344,8 @@ const resetVotes = (index: number) => {
 p.middle-buttons__updated {
   position: absolute;
   margin-top: 0;
-  margin-left: 30%;
+
+  padding-left: 25%;
   margin-bottom: 1em;
 }
 
@@ -410,7 +410,7 @@ p.middle-buttons__updated {
   color: white;
   border: 2px solid white;
   width: 100%;
-  font-size: 1rem;
+
   font-size: 1.2rem;
   padding: 1em 2em;
   font-weight: 400;
