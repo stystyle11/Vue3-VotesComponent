@@ -18,6 +18,30 @@ interface Votes {
 }
 const { votingData } = storeToRefs(useVotingStore())
 
+const compareDates = (lastDate: string) => {
+  const date = new Date(lastDate)
+  console.log('date', date)
+  // Get todays date
+  const currentDate = new Date()
+
+  // Calculate the difference in milliseconds between the dates
+  const differenceBetweenDates = currentDate - date
+
+  // Convert milliseconds to days
+  const differenceInDays = differenceBetweenDates / (1000 * 60 * 60 * 24)
+
+  // Create a function / if statement or switch to return if it is days / months / year
+  if (differenceInDays / 30 < 1) {
+    return differenceInDays + 'days ago'
+  } else if (differenceInDays / 30 > 1 && differenceInDays / 30 < 12) {
+    return differenceInDays + 'months ago'
+  } else {
+    let years = differenceInDays / 365
+
+    return Math.floor(years) + 'years ago'
+  }
+}
+
 const checkMostVotesSymbol = (positive: number, negative: number) => {
   return positive > negative ? true : false
 }
@@ -34,6 +58,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 }
 </script>
 <template>
+  <h1 class="main-title">Previous Rulings</h1>
   <div v-for="vote in votingData" :key="vote.name" class="content-wrapper">
     <div
       class="content-wrapper__background"
@@ -68,6 +93,9 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
         <img :src="`${vote.picture}`" alt="thumbs up" />
         </>
         -->
+        <p class="content-wrapper__updated">
+          {{ compareDates(vote.lastUpdated) }}
+        </p>
         <div class="middle-buttons">
           <div class="middle-items">
             <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
@@ -141,12 +169,13 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 </template>
 
 <style scoped>
-/*
-featured-card__content
-*/
 .content-wrapper {
   width: 100%;
   margin: 2em 0;
+}
+.main-title {
+  font-weight: 300;
+  color: #464646;
 }
 .content-wrapper__background {
   width: 100%;
