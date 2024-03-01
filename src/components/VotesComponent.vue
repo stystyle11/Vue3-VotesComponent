@@ -20,11 +20,16 @@ interface Votes {
 const { votingData } = storeToRefs(useVotingStore())
 
 // button login
-const positiveButtonActive = ref(false)
-const activeButtonIndex = ref(0)
-const togglePositiveButtonActive = (index: number) => {
-  console.log(positiveButtonActive.value)
-  activeButtonIndex.value = index
+
+const activePositiveButtonIndex = ref(null)
+const activeNegativeButtonIndex = ref(null)
+const togglePositiveButtonActive = (index: number | any) => {
+  activeNegativeButtonIndex.value = null
+  activePositiveButtonIndex.value = index
+}
+const toggleNegativeButtonActive = (index: number | any) => {
+  activePositiveButtonIndex.value = null
+  activeNegativeButtonIndex.value = index
 }
 // Date logic
 const compareDates = (lastDate: string) => {
@@ -113,14 +118,24 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
           <div class="middle-items">
             <button
               class="button-middle"
-              :class="{ active: activeButtonIndex === index }"
+              :style="{
+                backgroundColor: 'rgba(var(--color-green-positive), 1)'
+              }"
+              :class="{ active: activePositiveButtonIndex === index }"
               @click="togglePositiveButtonActive(index)"
             >
               <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
             </button>
           </div>
           <div class="middle-items">
-            <button class="button-middle">
+            <button
+              class="button-middle"
+              :style="{
+                backgroundColor: 'rgba(var(--color-yellow-negative), 0.8)'
+              }"
+              :class="{ active: activeNegativeButtonIndex === index }"
+              @click="toggleNegativeButtonActive(index)"
+            >
               <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
             </button>
           </div>
@@ -191,8 +206,9 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 
 <style scoped>
 .content-wrapper {
-  width: 100%;
+  width: auto;
   margin: 2em 0;
+  height: 100%;
 }
 
 .main-title {
@@ -260,7 +276,8 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   justify-content: space-between;
   width: 65%;
   font-size: 1rem;
-  height: 20%;
+  height: 25%;
+  min-height: 6em;
   margin-bottom: 1em;
   margin-left: 4em;
 }
@@ -273,9 +290,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 }
 
 .active {
-  border: 3px solid white;
-  background-color: transparent;
-  background-color: rgba(var(--color-green-positive), 1);
+  outline: 3px solid white;
 }
 
 .middle-items {
@@ -285,14 +300,17 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
   height: 100%;
 }
 
-.middle-items img[alt='thumbs up'],
+.middle-items img[alt='thumbs up'] {
+  padding: 1em;
+}
 .top-items img[alt='thumbs up'] {
   padding: 1em;
-
-  background-color: rgba(var(--color-green-positive), 1);
+  background-color: rgba(var(--color-green-positive), 0.8);
 }
 
-.middle-items img[alt='thumbs down'],
+.middle-items img[alt='thumbs down'] {
+  padding: 1em;
+}
 .top-items img[alt='thumbs down'] {
   padding: 1em;
   background-color: rgba(var(--color-yellow-negative), 0.8);
