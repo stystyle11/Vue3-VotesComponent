@@ -7,8 +7,17 @@ export const useVotingStore = defineStore('voting', {
     votingData
   }),
   actions: {
-    addVotes(index, value) {
-      this.votingData[index].push({ ...value })
+    updatePositiveVotes(cardIndex: number, positiveVote: number) {
+      const cardData = this.votingData[cardIndex]
+      if (cardData) {
+        cardData.votes.positive += positiveVote
+      }
+    },
+    updateNegativeVotes(cardIndex: number, negativeVote: number) {
+      const cardData = this.votingData[cardIndex]
+      if (cardData) {
+        cardData.votes.negative += negativeVote
+      }
     }
   }
 })

@@ -18,6 +18,16 @@ interface Votes {
 }
 // Data from Pinia
 const { votingData } = storeToRefs(useVotingStore())
+const votingStore = useVotingStore()
+// update votes in Pinia
+
+const updateVotes = (index: number) => {
+  if (activePositiveButtonIndex.value !== null) {
+    votingStore.updatePositiveVotes(index, 1)
+  } else {
+    votingStore.updateNegativeVotes(index, 1)
+  }
+}
 
 // button login
 
@@ -144,9 +154,11 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
             </button>
           </div>
           <div class="middle-items">
+            Positive{{ vote.votes.positive }} Negative{{ vote.votes.negative }}
             <button
               class="vote-button"
               :class="{ disabled: allowToVote !== index }"
+              @click="updateVotes(index)"
             >
               Vote Now
             </button>
