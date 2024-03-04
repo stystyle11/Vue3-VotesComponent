@@ -20,13 +20,14 @@ interface Votes {
 const { votingData } = storeToRefs(useVotingStore())
 const votingStore = useVotingStore()
 
-// update votes in Pinia
-// If the active button has been pressed and active positive has a value
-// then store it in the positive votes, else store it in the negative votes
-// making it two function in pinia, I only need to pass the data I will compute!
+/* update votes in Pinia
+ If the active button has been pressed and active positive has a value
+ then store it in the positive votes, else store it in the negative votes
+ making it two function in pinia, I only need to pass the data I will compute!
 
-// button login
-// Selected active and positive based on the index of the item clicked
+ button login
+ Selected active and positive based on the index of the item clicked
+*/
 const activePositiveButtonIndex = ref(null)
 const activeNegativeButtonIndex = ref(null)
 const allowToVote = ref(null)
@@ -85,7 +86,7 @@ const getPercentage = (a: number, b: number, actualVote: number) => {
 }
 /*
 To avoid looping the array to check for buttons clicked
-We will create this before the component mounts
+We will create this before the component mounts and loop it only once
 */
 const votesCasted = ref<Array<number>>([])
 
@@ -111,150 +112,151 @@ const resetVotes = (index: number) => {
 }
 </script>
 <template>
-  <h1 class="main-title">Previous Rulings</h1>
-  <div
-    v-for="(vote, index) in votingData"
-    :key="vote.name"
-    class="content-wrapper"
-  >
-    <div
-      class="content-wrapper__background"
-      :style="{ backgroundImage: `url(${vote.picture})` }"
-    >
-      <div class="content-wrapper__design">
-        <div class="title-wrapper">
+  <div class="slider">
+    <h1 class="main-title">Previous Rulings</h1>
+    <div class="slides">
+      <div
+        v-for="(vote, index) in votingData"
+        :key="vote.name"
+        class="content-wrapper"
+      >
+        <div class="slides-items">
           <div
-            v-if="
-              checkMostVotesSymbol(vote.votes.positive, vote.votes.negative)
-            "
-            class="top-items"
+            class="content-wrapper__background-top"
+            :style="{ backgroundImage: `url(${vote.picture})` }"
           >
-            <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
-          </div>
-          <div v-else class="top-items">
-            <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
-          </div>
-          <h2 class="content-wrapper__title">
-            {{ vote.name }}
-          </h2>
-        </div>
-
-        <p class="content-wrapper__description">
-          {{ vote.description }}
-        </p>
-        <!--
-        < div
-        class="picture-img"
-        :style="{ backgroundImage: 'url( ${vote.picture} )' }"
-        >
-        <img :src="`${vote.picture}`" alt="thumbs up" />
-        </>
-        -->
-
-        <div v-if="!votesCasted[index]" class="middle-buttons">
-          <p class="middle-buttons__updated">
-            {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
-          </p>
-          <div class="middle-items">
-            <button
-              class="button-middle"
-              :style="{
-                backgroundColor: 'rgba(var(--color-green-positive), 1)'
-              }"
-              :class="{ active: activePositiveButtonIndex === index }"
-              @click="togglePositiveButtonActive(index)"
-            >
-              <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
-            </button>
-          </div>
-          <div class="middle-items">
-            <button
-              class="button-middle"
-              :style="{
-                backgroundColor: 'rgba(var(--color-yellow-negative), 0.8)'
-              }"
-              :class="{ active: activeNegativeButtonIndex === index }"
-              @click="toggleNegativeButtonActive(index)"
-            >
-              <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
-            </button>
-          </div>
-          <div class="middle-items">
-            <button
-              class="vote-button"
-              :class="{ disabled: allowToVote !== index }"
-              @click="updateVotes(index)"
-            >
-              Vote Now
-            </button>
-          </div>
-        </div>
-        <div v-else class="middle-buttons">
-          <p class="middle-buttons__updated">Thank you for your vote !</p>
-
-          <div
-            class="middle-items"
-            :style="{
-              paddingLeft: '40%'
-            }"
-          >
-            <button class="vote-button" @click="resetVotes(index)">
-              Vote Again
-            </button>
-          </div>
-        </div>
-        <div class="voting-stats">
-          <div
-            class="voting-positive"
-            :style="{
-              width:
-                getPercentage(
-                  vote.votes.negative,
-                  vote.votes.positive,
-                  vote.votes.positive
-                ) + '%'
-            }"
-          >
-            <div class="flex-votes">
-              <div class="flex-positive">
+            <div class="title-wrapper-top">
+              <!-- Vote Titles and Most Votes Symbol-->
+              <div
+                v-if="
+                  checkMostVotesSymbol(vote.votes.positive, vote.votes.negative)
+                "
+                class="top-items-top"
+              >
                 <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
               </div>
-              <div class="flex-positive">
-                {{
-                  getPercentage(
-                    vote.votes.negative,
-                    vote.votes.positive,
-                    vote.votes.positive
-                  ) + '%'
-                }}
+              <div v-else class="top-items-top">
+                <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+              </div>
+              <h2 class="content-wrapper__title-top">
+                {{ vote.name }}
+              </h2>
+            </div>
+            <!-- Vote Description-->
+            <p class="content-wrapper__description">
+              {{ vote.description }}
+            </p>
+            <!-- Votes Update-->
+
+            <p v-if="!votesCasted[index]" class="middle-buttons__updated">
+              {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
+            </p>
+            <p v-else class="middle-buttons__updated">
+              Thank you for your vote !
+            </p>
+            <!-- Votes Buttons-->
+            <div class="middle-buttons">
+              <div v-show="!votesCasted[index]" class="middle-items">
+                <button
+                  class="button-middle"
+                  :style="{
+                    backgroundColor: 'rgba(var(--color-green-positive), 1)'
+                  }"
+                  :class="{ active: activePositiveButtonIndex === index }"
+                  @click="togglePositiveButtonActive(index)"
+                >
+                  <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+                </button>
+              </div>
+              <div v-show="!votesCasted[index]" class="middle-items">
+                <button
+                  class="button-middle"
+                  :style="{
+                    backgroundColor: 'rgba(var(--color-yellow-negative), 0.8)'
+                  }"
+                  :class="{ active: activeNegativeButtonIndex === index }"
+                  @click="toggleNegativeButtonActive(index)"
+                >
+                  <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+                </button>
+              </div>
+              <div v-if="!votesCasted[index]" class="middle-items">
+                <button
+                  :disabled="allowToVote !== index"
+                  class="vote-button"
+                  :class="{ disabled: allowToVote !== index }"
+                  @click="updateVotes(index)"
+                >
+                  Vote Now
+                </button>
+              </div>
+              <div
+                :style="{
+                  paddingLeft: '10em'
+                }"
+                v-else
+                class="middle-items"
+              >
+                <button class="vote-button" @click="resetVotes(index)">
+                  Vote Again
+                </button>
               </div>
             </div>
-          </div>
-
-          <div
-            class="voting-negative"
-            :style="{
-              width:
-                getPercentage(
-                  vote.votes.negative,
-                  vote.votes.positive,
-                  vote.votes.negative
-                ) + '%'
-            }"
-          >
-            <div class="flex-votes">
-              <div class="flex-negative">
-                {{
-                  getPercentage(
-                    vote.votes.negative,
-                    vote.votes.positive,
-                    vote.votes.negative
-                  ) + '%'
-                }}
+            <!-- Voting Stats-->
+            <div class="voting-stats">
+              <div
+                class="voting-positive"
+                :style="{
+                  width:
+                    getPercentage(
+                      vote.votes.negative,
+                      vote.votes.positive,
+                      vote.votes.positive
+                    ) + '%'
+                }"
+              >
+                <div class="flex-votes">
+                  <div class="flex-positive">
+                    <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+                  </div>
+                  <div class="flex-positive">
+                    {{
+                      getPercentage(
+                        vote.votes.negative,
+                        vote.votes.positive,
+                        vote.votes.positive
+                      ) + '%'
+                    }}
+                  </div>
+                </div>
               </div>
 
-              <div class="flex-negative">
-                <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+              <div
+                class="voting-negative"
+                :style="{
+                  width:
+                    getPercentage(
+                      vote.votes.negative,
+                      vote.votes.positive,
+                      vote.votes.negative
+                    ) + '%'
+                }"
+              >
+                <div class="flex-votes">
+                  <div class="flex-negative">
+                    {{
+                      getPercentage(
+                        vote.votes.negative,
+                        vote.votes.positive,
+                        vote.votes.negative
+                      ) + '%'
+                    }}
+                  </div>
+
+                  <div class="flex-negative">
+                    <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -265,15 +267,75 @@ const resetVotes = (index: number) => {
 </template>
 
 <style scoped>
-.content-wrapper {
-  width: auto;
-  margin: 2em 0;
+.slider {
+  height: 37em;
+  overflow: hidden;
+  width: 100%;
+  padding-left: 1em;
+}
+
+.slides {
+  display: flex;
+  width: 100%;
+  height: auto;
+
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+.slides::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+.slides::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0);
+  border-radius: 10px;
+}
+.slides::-webkit-scrollbar-track {
+  background: transparent;
+}
+.slides-items {
+  scroll-snap-align: start;
+  flex-shrink: 0;
+  width: 100%;
+  min-width: 25em;
   height: 100%;
+
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content-wrapper {
+  padding-left: 1em;
+  color: white;
 }
 
 .main-title {
   font-weight: 300;
   color: #464646;
+}
+.content-wrapper__background-top {
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+}
+.content-wrapper__title-top {
+  margin: 0;
+  font-size: 3rem;
+  font-weight: 400;
+  line-height: 1;
+
+  color: var(--color-white);
+}
+.title-wrapper-top {
+  display: flex;
+  padding-top: 8em;
+  align-items: baseline;
 }
 
 .content-wrapper__background {
@@ -327,26 +389,25 @@ const resetVotes = (index: number) => {
   font-size: 1.25rem;
   font-weight: 400;
   -webkit-line-clamp: 6;
+  width: 19em;
+
   padding: 1em;
   text-overflow: ellipsis;
 }
 
 .middle-buttons {
   display: flex;
-
   width: 85%;
   font-size: 1rem;
-  height: 25%;
-  min-height: 6em;
-  margin-bottom: 1em;
-  padding-left: 4em;
-}
-p.middle-buttons__updated {
-  position: absolute;
-  margin-top: 0;
 
-  padding-left: 25%;
-  margin-bottom: 1em;
+  padding-left: 3em;
+  height: fit-content;
+  align-items: center;
+}
+.middle-buttons__updated {
+  padding: 0.5em 0 0.5em 9em;
+  font-size: 1em;
+  color: white;
 }
 
 .button-middle {
@@ -369,13 +430,12 @@ p.middle-buttons__updated {
   align-self: center;
   padding-left: 1em;
   height: 100%;
-  padding-top: 2em;
 }
 
 .middle-items img[alt='thumbs up'] {
   padding: 1em;
 }
-.top-items img[alt='thumbs up'] {
+.top-items-top img[alt='thumbs up'] {
   padding: 1em;
   background-color: rgba(var(--color-green-positive), 0.8);
 }
@@ -383,7 +443,7 @@ p.middle-buttons__updated {
 .middle-items img[alt='thumbs down'] {
   padding: 1em;
 }
-.top-items img[alt='thumbs down'] {
+.top-items-top img[alt='thumbs down'] {
   padding: 1em;
   background-color: rgba(var(--color-yellow-negative), 0.8);
 }
@@ -421,15 +481,20 @@ p.middle-buttons__updated {
   display: flex;
   width: 100%;
   height: 3rem;
+  position: absolute;
+  bottom: 0;
 }
 
 .voting-positive {
-  height: 3rem;
+  display: flex;
+  justify-content: flex-start;
   background-color: rgba(var(--color-green-positive), 0.7);
 }
 
 .voting-negative {
-  height: 3rem;
+  display: flex;
+  justify-content: flex-end;
+
   background-color: rgba(var(--color-yellow-negative), 0.7);
 }
 </style>
