@@ -136,6 +136,8 @@ const addEllipsis = (text: string, max: number) => {
 const isMobile = ref<boolean>(false)
 const windowWidth = ref(window.innerWidth)
 const isGrid = ref<boolean>(false)
+
+const desktopColumns = ref<number>(2)
 // Maybe just toogle isGrid
 //const isList = ref<boolean>(false)
 
@@ -147,12 +149,16 @@ const handleItemClick = (item: string) => {
     : (isGrid.value = false)
 }
 const checkStartWidth = () => {
-  return (
-    windowWidth.value < 768
-      ? (isMobile.value = true)
-      : (isMobile.value = false),
-    (isGrid.value = true)
-  )
+  if (windowWidth.value < 768) {
+    isMobile.value = true
+  } else if (windowWidth.value > 768 && windowWidth.value <= 1024) {
+    isMobile.value = false
+    isGrid.value = true
+    desktopColumns.value = 2
+  } else {
+    desktopColumns.value = 3
+    isGrid.value = true
+  }
 }
 checkStartWidth()
 // Create a watch effect to observe changes in the width of the window
@@ -161,11 +167,14 @@ watchEffect(() => {
     windowWidth.value = window.innerWidth
     if (windowWidth.value < 768) {
       isMobile.value = true
-    } else if (windowWidth.value > 768 && isGrid.value) {
+      desktopColumns.value = 2
+    } else if (windowWidth.value > 768 && windowWidth.value < 1025) {
       isMobile.value = false
+
+      desktopColumns.value = 2
     } else {
       isMobile.value = false
-      isGrid.value = false
+      desktopColumns.value = 3
     }
   }
   // add the listener to resize event
@@ -214,6 +223,7 @@ watchEffect(() => {
     :resetVotes="resetVotes"
     :getPercentage="getPercentage"
     :addEllipsis="addEllipsis"
+    :desktopColumns="desktopColumns"
   >
   </GridComponent>
   <!-- List Logic-->

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 interface Votes {
   name: string
   description: string
@@ -25,15 +24,26 @@ const props = defineProps<{
   resetVotes: Function
   getPercentage: Function
   addEllipsis: Funtion
+  desktopColumns: number
 }>()
 </script>
 
 <template>
-  <div class="grid-container">
+  <div
+    class="grid-container"
+    :style="{
+      gridTemplateColumns: `repeat(${desktopColumns}, 1fr)`,
+      maxWidth: desktopColumns > 2 ? '1100px' : 'initial',
+      gridColumnGap: desktopColumns > 2 ? '10px' : '.9em'
+    }"
+  >
     <div
       v-for="(vote, index) in votingData"
       :key="vote.name"
       class="content-wrapper"
+      :style="{
+        maxWidth: desktopColumns > 2 ? '360px' : 'inherit'
+      }"
     >
       <div class="slides-items">
         <div
@@ -54,7 +64,7 @@ const props = defineProps<{
               <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
             </div>
             <h2 class="content-wrapper__title-top">
-              {{ addEllipsis(vote.description, 22) }}
+              {{ addEllipsis(vote.name, 18) }}
             </h2>
           </div>
           <!-- Vote Description-->
@@ -183,7 +193,7 @@ const props = defineProps<{
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+
   gap: 0.9em;
   margin-top: 1.5em;
 }
@@ -220,8 +230,9 @@ const props = defineProps<{
 }
 .content-wrapper__title-top {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 400;
+  padding-left: 0.3em;
   line-height: 1;
 
   color: var(--color-white);
@@ -275,12 +286,10 @@ const props = defineProps<{
 
 .content-wrapper__description {
   display: block;
-
-  margin: 1rem 0;
-  font-size: 1.25rem;
+  margin: 0;
+  font-size: 1rem;
   font-weight: 400;
-  width: 19em;
-
+  width: 80%;
   padding: 1em;
 }
 
@@ -292,9 +301,11 @@ const props = defineProps<{
   padding-left: 3em;
   height: fit-content;
   align-items: center;
+
+  margin-bottom: 4em;
 }
 .middle-buttons__updated {
-  padding: 0.5em 0 0.5em 9em;
+  padding: 0.5em 0 0.5em 4em;
   font-size: 1em;
   color: white;
 }
@@ -372,6 +383,7 @@ const props = defineProps<{
   height: 3rem;
   margin-top: 1em;
   bottom: 0;
+  position: absolute;
 }
 
 .voting-positive {
