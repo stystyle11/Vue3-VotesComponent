@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
 import VotesComponent from './components/VotesComponent.vue'
 </script>
 <template>

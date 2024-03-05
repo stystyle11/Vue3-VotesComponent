@@ -117,7 +117,7 @@ const props = defineProps<{
             </div>
             <div
               :style="{
-                paddingLeft: '9em'
+                paddingLeft: '7.5em'
               }"
               v-else
               class="middle-items"
@@ -295,7 +295,7 @@ const props = defineProps<{
 
 .middle-buttons {
   display: flex;
-  width: 85%;
+  width: fit-content;
   font-size: 1rem;
 
   padding-left: 3em;

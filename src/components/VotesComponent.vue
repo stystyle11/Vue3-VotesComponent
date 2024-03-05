@@ -9,17 +9,6 @@ import GridComponent from '@/components/GridComponent.vue'
 import ListComponent from '@/components/ListComponent.vue'
 //import type { Votes } from '@/types/VotesData'
 
-interface Votes {
-  name: string
-  description: string
-  category: string
-  picture: string
-  lastUpdated: string
-  votes: {
-    positive: number
-    negative: number
-  }
-}
 // Data from Pinia
 const { votingData } = storeToRefs(useVotingStore())
 const votingStore = useVotingStore()
