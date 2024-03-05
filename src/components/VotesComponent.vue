@@ -38,7 +38,7 @@ const toggleNegativeButtonActive = (index: number | any) => {
 // Date logic
 const compareDates = (lastDate: string) => {
   const date = new Date(lastDate)
-  console.log('date', date)
+
   // Get todays date
   const currentDate = new Date()
 
@@ -143,10 +143,11 @@ const handleItemClick = (item: string) => {
 const checkStartWidth = () => {
   if (windowWidth.value < 768) {
     isMobile.value = true
-  } else if (windowWidth.value > 768 && windowWidth.value <= 1024) {
+  } else if (windowWidth.value > 768 && windowWidth.value < 1025) {
     isMobile.value = false
     isGrid.value = true
     desktopColumns.value = 2
+    console.log('verificando', desktopColumns.value)
   } else {
     desktopColumns.value = 3
     isGrid.value = true
@@ -448,7 +449,7 @@ watchEffect(() => {
   background-color: #f8f9fa;
 }
 .slider {
-  height: 37em;
+  height: 32em;
   overflow: hidden;
   width: 100%;
   padding-left: 1em;

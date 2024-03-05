@@ -209,21 +209,6 @@ const props = defineProps<{
   z-index: 1;
   padding: 0.5em 0;
 }
-.newContent::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 33%;
-  height: 100%;
-  background: rgb(227, 220, 214);
-  background: linear-gradient(
-    90deg,
-    rgb(227 220 214 / 0%) 0%,
-    rgb(110 110 110 / 31%) 40%,
-    rgba(133, 133, 133, 1) 86%
-  );
-}
 .newContent {
   margin-left: 30%;
   width: 70%;
@@ -236,6 +221,21 @@ const props = defineProps<{
     rgba(133, 133, 133, 1) 2%,
     rgba(133, 133, 133, 1) 50%,
     rgba(133, 133, 133, 1) 85%
+  );
+}
+.newContent::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 36%;
+  height: 100%;
+  background: rgb(227, 220, 214);
+  background: linear-gradient(
+    90deg,
+    rgb(227 220 214 / 0%) 0%,
+    rgb(152 150 150 / 67%) 40%,
+    rgb(133 133 133) 86%
   );
 }
 
