@@ -17,10 +17,10 @@ const props = defineProps<{
   checkMostVotesSymbol: Function
   togglePositiveButtonActive: Function
   toggleNegativeButtonActive: Function
-  activeNegativeButtonIndex: number
-  activePositiveButtonIndex: number
+  activeNegativeButtonIndex: number | any
+  activePositiveButtonIndex: number | any
   votesCasted: number[]
-  activePositiveButtonIndex: any
+
   allowToVote: number | any
   updateVotes: Function
   resetVotes: Function
@@ -38,10 +38,14 @@ const props = defineProps<{
       <div class="slides-items">
         <div
           class="content-wrapper__background-top"
-          :style="{ backgroundImage: `url(${vote.picture})` }"
+          :style="{
+            backgroundImage: `url(${vote.picture})`,
+            backgroundSize: '30%',
+            backgroundRepeat: 'no-repeat'
+          }"
         >
+          <!-- Vote Name and Most Votes Symbol-->
           <div class="title-wrapper-top">
-            <!-- Vote Titles and Most Votes Symbol-->
             <div
               v-if="
                 checkMostVotesSymbol(vote.votes.positive, vote.votes.negative)
@@ -53,64 +57,72 @@ const props = defineProps<{
             <div v-else class="top-items-top">
               <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
             </div>
-            <h2 class="content-wrapper__title-top">{{ vote.name }}</h2>
           </div>
-          <!-- Vote Description-->
-          <p class="content-wrapper__description">{{ vote.description }}</p>
-          <!-- Votes Update-->
-
-          <p v-if="!votesCasted[index]" class="middle-buttons__updated">
-            {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
-          </p>
-          <p v-else class="middle-buttons__updated">
-            Thank you for your vote !
-          </p>
-          <!-- Votes Buttons-->
-          <div class="middle-buttons">
-            <div v-show="!votesCasted[index]" class="middle-items">
-              <button
-                class="button-middle"
-                :style="{
-                  backgroundColor: 'rgba(var(--color-green-positive), 1)'
-                }"
-                :class="{ active: activePositiveButtonIndex === index }"
-                @click="togglePositiveButtonActive(index)"
-              >
-                <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
-              </button>
+          <div class="newContent">
+            <!-- Name And Updated In one wrapp-->
+            <div class="wrapper-name-update">
+              <!-- Card Name -->
+              <h2 class="content-wrapper__title-top">{{ vote.name }}</h2>
+              <!-- Card Update and Category-->
+              <p v-if="!votesCasted[index]" class="middle-buttons__updated">
+                {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
+              </p>
+              <p v-else class="middle-buttons__updated">
+                Thank you for your vote !
+              </p>
             </div>
-            <div v-show="!votesCasted[index]" class="middle-items">
-              <button
-                class="button-middle"
-                :style="{
-                  backgroundColor: 'rgba(var(--color-yellow-negative), 0.8)'
-                }"
-                :class="{ active: activeNegativeButtonIndex === index }"
-                @click="toggleNegativeButtonActive(index)"
-              >
-                <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
-              </button>
-            </div>
-            <div v-if="!votesCasted[index]" class="middle-items">
-              <button
-                :disabled="allowToVote !== index"
-                class="vote-button"
-                :class="{ disabled: allowToVote !== index }"
-                @click="updateVotes(index)"
-              >
-                Vote Now
-              </button>
-            </div>
-            <div
-              :style="{
-                paddingLeft: '9em'
-              }"
-              v-else
-              class="middle-items"
-            >
-              <button class="vote-button" @click="resetVotes(index)">
-                Vote Again
-              </button>
+            <!-- Description and middle buttons In one wrapp-->
+            <div class="wrapper-description-middlebutton">
+              <!-- Card Description-->
+              <p class="content-wrapper__description">{{ vote.description }}</p>
+              <!-- Card Middle Buttons-->
+              <div class="middle-buttons">
+                <div v-show="!votesCasted[index]" class="middle-items">
+                  <button
+                    class="button-middle"
+                    :style="{
+                      backgroundColor: 'rgba(var(--color-green-positive), 1)'
+                    }"
+                    :class="{ active: activePositiveButtonIndex === index }"
+                    @click="togglePositiveButtonActive(index)"
+                  >
+                    <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
+                  </button>
+                </div>
+                <div v-show="!votesCasted[index]" class="middle-items">
+                  <button
+                    class="button-middle"
+                    :style="{
+                      backgroundColor: 'rgba(var(--color-yellow-negative), 0.8)'
+                    }"
+                    :class="{ active: activeNegativeButtonIndex === index }"
+                    @click="toggleNegativeButtonActive(index)"
+                  >
+                    <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
+                  </button>
+                </div>
+                <div v-if="!votesCasted[index]" class="middle-items">
+                  <button
+                    :disabled="allowToVote !== index"
+                    class="vote-button"
+                    :class="{ disabled: allowToVote !== index }"
+                    @click="updateVotes(index)"
+                  >
+                    Vote Now
+                  </button>
+                </div>
+                <div
+                  :style="{
+                    paddingLeft: '7em'
+                  }"
+                  v-else
+                  class="middle-items"
+                >
+                  <button class="vote-button" @click="resetVotes(index)">
+                    Vote Again
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
           <!-- Voting Stats-->
@@ -179,100 +191,59 @@ const props = defineProps<{
 <style scoped>
 .grid-container {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0.9em;
+  grid-template-columns: (1, 1fr);
+
   margin-top: 1.5em;
+  z-index: 2;
 }
-.main-title-wrapper {
+.wrapper-name-update {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  width: 90%;
+  padding-left: 6%;
 }
-.dropdown {
-  position: relative;
-  z-index: 10;
-}
-.dropdown-toggle {
-  background-color: #fff;
-  border: 3px solid #000;
-  padding: 0.5em;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.dropdown-button {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  min-width: 12.5em;
-}
-
-.dropdown-title-toogle {
-  padding: 0 4em;
-}
-.dropdown-icon-toogle {
-}
-
-.dropdown-menu {
+.newContent::after {
+  content: '';
   position: absolute;
-  top: 100%;
+  top: 0;
   left: 0;
-  border-left: 3px solid black;
-  border-right: 3px solid black;
-  border-top: none;
-  width: 97%;
+  width: 33%;
+  height: 100%;
+  background: rgb(227, 220, 214);
+  background: linear-gradient(
+    90deg,
+    rgb(227 220 214 / 0%) 0%,
+    rgb(110 110 110 / 31%) 40%,
+    rgba(133, 133, 133, 1) 86%
+  );
+}
+.newContent {
+  margin-left: 30%;
+  width: 70%;
+
+  height: 100%;
+  background: rgb(227, 220, 214);
+  background: linear-gradient(
+    90deg,
+    rgba(227, 220, 214, 1) 0%,
+    rgba(133, 133, 133, 1) 2%,
+    rgba(133, 133, 133, 1) 50%,
+    rgba(133, 133, 133, 1) 85%
+  );
 }
 
-.dropdown-menu p {
-  margin: 0;
-  padding: 0;
-
-  padding: 0.5em 1em;
-  background-color: white;
-  border-bottom: 3px solid black;
-  cursor: pointer;
+.wrapper-description-middlebutton {
+  display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  display: flex;
+  width: 94%;
+  padding-left: 6%;
+  margin-bottom: 4em;
 }
 
-.dropdown-menu button:hover {
-  background-color: #f8f9fa;
-}
-
-.slider {
-  height: 37em;
-  overflow: hidden;
-  width: 100%;
-  padding-left: 1em;
-}
-
-.slides {
-  display: flex;
-  width: 100%;
-  height: auto;
-
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-.slides::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-.slides::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0);
-  border-radius: 10px;
-}
-.slides::-webkit-scrollbar-track {
-  background: transparent;
-}
 .slides-items {
-  width: 98%;
+  width: 100%;
 
   height: 100%;
 
@@ -284,6 +255,7 @@ const props = defineProps<{
 
 .content-wrapper {
   color: white;
+  margin-bottom: 1em;
 }
 
 .main-title {
@@ -293,9 +265,8 @@ const props = defineProps<{
 .content-wrapper__background-top {
   width: 100%;
   height: 100%;
-  background-size: cover;
-  background-position: center;
 }
+
 .content-wrapper__title-top {
   margin: 0;
   font-size: 2rem;
@@ -304,10 +275,10 @@ const props = defineProps<{
 
   color: var(--color-white);
 }
+
 .title-wrapper-top {
-  display: flex;
-  padding-top: 8em;
-  align-items: baseline;
+  position: absolute;
+  top: 0;
 }
 
 .content-wrapper__background {
@@ -356,14 +327,14 @@ const props = defineProps<{
   white-space: nowrap;
   overflow: hidden;
   max-height: 10.5rem;
-  margin: 1rem 0;
+
   -webkit-box-orient: vertical;
-  font-size: 1.25rem;
+  font-size: 1rem;
   font-weight: 400;
   -webkit-line-clamp: 6;
-  width: 19em;
+  width: 24em;
 
-  padding: 1em;
+  padding: 1em 0;
   text-overflow: ellipsis;
 }
 
@@ -372,7 +343,7 @@ const props = defineProps<{
   width: 85%;
   font-size: 1rem;
 
-  padding-left: 3em;
+  padding-left: 1em;
   height: fit-content;
   align-items: center;
 }
@@ -405,18 +376,18 @@ const props = defineProps<{
 }
 
 .middle-items img[alt='thumbs up'] {
-  padding: 1em;
+  padding: 0.6em;
 }
 .top-items-top img[alt='thumbs up'] {
-  padding: 1em;
+  padding: 0.6em;
   background-color: rgba(var(--color-green-positive), 0.8);
 }
 
 .middle-items img[alt='thumbs down'] {
-  padding: 1em;
+  padding: 0.6em;
 }
 .top-items-top img[alt='thumbs down'] {
-  padding: 1em;
+  padding: 0.6em;
   background-color: rgba(var(--color-yellow-negative), 0.8);
 }
 
@@ -454,6 +425,7 @@ const props = defineProps<{
   width: 100%;
   height: 3rem;
   margin-top: 1em;
+  position: absolute;
   bottom: 0;
 }
 

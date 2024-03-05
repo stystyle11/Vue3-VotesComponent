@@ -17,10 +17,9 @@ const props = defineProps<{
   checkMostVotesSymbol: Function
   togglePositiveButtonActive: Function
   toggleNegativeButtonActive: Function
-  activeNegativeButtonIndex: number
-  activePositiveButtonIndex: number
+  activeNegativeButtonIndex: number | any
+  activePositiveButtonIndex: number | any
   votesCasted: number[]
-  activePositiveButtonIndex: any
   allowToVote: number | any
   updateVotes: Function
   resetVotes: Function
@@ -188,91 +187,9 @@ const props = defineProps<{
   justify-content: space-between;
   align-items: center;
 }
-.dropdown {
-  position: relative;
-  z-index: 10;
-}
-.dropdown-toggle {
-  background-color: #fff;
-  border: 3px solid #000;
-  padding: 0.5em;
-  cursor: pointer;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-.dropdown-button {
-  margin: 0;
-  padding: 0;
-  border: 0;
-  background: transparent;
-  min-width: 12.5em;
-}
 
-.dropdown-title-toogle {
-  padding: 0 4em;
-}
-.dropdown-icon-toogle {
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  border-left: 3px solid black;
-  border-right: 3px solid black;
-  border-top: none;
-  width: 97%;
-}
-
-.dropdown-menu p {
-  margin: 0;
-  padding: 0;
-
-  padding: 0.5em 1em;
-  background-color: white;
-  border-bottom: 3px solid black;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-  display: flex;
-}
-
-.dropdown-menu button:hover {
-  background-color: #f8f9fa;
-}
-
-.slider {
-  height: 37em;
-  overflow: hidden;
-  width: 100%;
-  padding-left: 1em;
-}
-
-.slides {
-  display: flex;
-  width: 100%;
-  height: auto;
-
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-
-  scroll-behavior: smooth;
-  -webkit-overflow-scrolling: touch;
-}
-.slides::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
-}
-.slides::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0);
-  border-radius: 10px;
-}
-.slides::-webkit-scrollbar-track {
-  background: transparent;
-}
 .slides-items {
-  width: 98%;
+  width: 100%;
 
   height: 100%;
 

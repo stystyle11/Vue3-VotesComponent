@@ -5,6 +5,8 @@ import { useVotingStore } from '@/stores/voting'
 
 import { storeToRefs } from 'pinia'
 import GridComponent from '@/components/GridComponent.vue'
+
+import ListComponent from '@/components/ListComponent.vue'
 //import type { Votes } from '@/types/VotesData'
 
 interface Votes {
@@ -129,7 +131,7 @@ const handleItemClick = (item: string) => {
 <template>
   <div class="main-title-wrapper">
     <h1 class="main-title">Previous Rulings</h1>
-    <!-- Item to the right-->
+    <!-- DropDown to the right-->
     <div class="dropdown">
       <button @click="toggleDropdown" class="dropdown-button">
         <div class="dropdown-toggle">
@@ -148,7 +150,7 @@ const handleItemClick = (item: string) => {
       </div>
     </div>
   </div>
-  <!-- Mobile logic-->
+  <!-- Mobile logic
   <GridComponent
     :votingData="votingData"
     :compareDates="compareDates"
@@ -164,6 +166,22 @@ const handleItemClick = (item: string) => {
     :getPercentage="getPercentage"
   >
   </GridComponent>
+  -->
+  <ListComponent
+    :votingData="votingData"
+    :compareDates="compareDates"
+    :checkMostVotesSymbol="checkMostVotesSymbol"
+    :togglePositiveButtonActive="togglePositiveButtonActive"
+    :toggleNegativeButtonActive="toggleNegativeButtonActive"
+    :votesCasted="votesCasted"
+    :activePositiveButtonIndex="activePositiveButtonIndex"
+    :activeNegativeButtonIndex="activeNegativeButtonIndex"
+    :allowToVote="allowToVote"
+    :updateVotes="updateVotes"
+    :resetVotes="resetVotes"
+    :getPercentage="getPercentage"
+  >
+  </ListComponent>
   <div class="slider">
     <div class="slides">
       <div
@@ -335,7 +353,7 @@ const handleItemClick = (item: string) => {
   margin: 0;
   padding: 0;
   border: 0;
-  background: transparent;
+  background: white;
   min-width: 12.5em;
 }
 
