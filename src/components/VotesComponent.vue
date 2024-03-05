@@ -127,7 +127,7 @@ const handleItemClick = (item: string) => {
   selectedGrid.value = item
   isOpen.value = false
 }
-// Add Ellipsis to texts
+// Add Ellipsis to texts title and description
 const addEllipsis = (text: string, max: number) => {
   if (text.length > max) {
     return text.slice(0, max) + '...'
@@ -135,6 +135,11 @@ const addEllipsis = (text: string, max: number) => {
     return text
   }
 }
+// Logic to display either mobile or Grid or List
+
+const isMobile = ref<boolean>(false)
+const isGrid = ref<boolean>(false)
+const isList = ref<boolean>(false)
 </script>
 <template>
   <div class="main-title-wrapper">
@@ -158,7 +163,7 @@ const addEllipsis = (text: string, max: number) => {
       </div>
     </div>
   </div>
-  <!-- Mobile logic
+  <!-- Grid Logic-->
   <GridComponent
     :votingData="votingData"
     :compareDates="compareDates"
@@ -175,7 +180,7 @@ const addEllipsis = (text: string, max: number) => {
     :addEllipsis="addEllipsis"
   >
   </GridComponent>
-  -->
+  <!-- List Logic-->
   <ListComponent
     :votingData="votingData"
     :compareDates="compareDates"
@@ -192,6 +197,7 @@ const addEllipsis = (text: string, max: number) => {
     :addEllipsis="addEllipsis"
   >
   </ListComponent>
+  <!-- Mobile logic-->
   <div class="slider">
     <div class="slides">
       <div
@@ -374,8 +380,6 @@ const addEllipsis = (text: string, max: number) => {
 .dropdown-title-toogle {
   padding: 0 4em;
 }
-.dropdown-icon-toogle {
-}
 
 .dropdown-menu {
   position: absolute;
@@ -427,8 +431,6 @@ const addEllipsis = (text: string, max: number) => {
   height: 10px;
 }
 .slides::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0);
-  border-radius: 10px;
 }
 .slides::-webkit-scrollbar-track {
   background: transparent;
