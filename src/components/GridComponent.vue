@@ -24,6 +24,7 @@ const props = defineProps<{
   updateVotes: Function
   resetVotes: Function
   getPercentage: Function
+  addEllipsis: Funtion
 }>()
 </script>
 
@@ -270,18 +271,13 @@ const props = defineProps<{
 
 .content-wrapper__description {
   display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  max-height: 10.5rem;
+
   margin: 1rem 0;
-  -webkit-box-orient: vertical;
   font-size: 1.25rem;
   font-weight: 400;
-  -webkit-line-clamp: 6;
   width: 19em;
 
   padding: 1em;
-  text-overflow: ellipsis;
 }
 
 .middle-buttons {

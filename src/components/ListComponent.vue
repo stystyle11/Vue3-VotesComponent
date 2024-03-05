@@ -25,6 +25,7 @@ const props = defineProps<{
   updateVotes: Function
   resetVotes: Function
   getPercentage: Function
+  addEllipsis: Funtion
 }>()
 </script>
 
@@ -62,7 +63,9 @@ const props = defineProps<{
             <!-- Name And Updated In one wrapp-->
             <div class="wrapper-name-update">
               <!-- Card Name -->
-              <h2 class="content-wrapper__title-top">{{ vote.name }}</h2>
+              <h2 class="content-wrapper__title-top">
+                {{ addEllipsis(vote.name, 22) }}
+              </h2>
               <!-- Card Update and Category-->
               <p v-if="!votesCasted[index]" class="middle-buttons__updated">
                 {{ compareDates(vote.lastUpdated) }}{{ vote.category }}
@@ -74,7 +77,9 @@ const props = defineProps<{
             <!-- Description and middle buttons In one wrapp-->
             <div class="wrapper-description-middlebutton">
               <!-- Card Description-->
-              <p class="content-wrapper__description">{{ vote.description }}</p>
+              <p class="content-wrapper__description">
+                {{ addEllipsis(vote.description, 50) }}
+              </p>
               <!-- Card Middle Buttons-->
               <div class="middle-buttons">
                 <div v-show="!votesCasted[index]" class="middle-items">
@@ -201,7 +206,9 @@ const props = defineProps<{
   justify-content: space-between;
   align-items: center;
   width: 90%;
-  padding-left: 6%;
+
+  position: relative;
+  z-index: 1;
 }
 .newContent::after {
   content: '';
@@ -238,8 +245,10 @@ const props = defineProps<{
   justify-content: space-between;
   align-items: center;
   width: 94%;
-  padding-left: 6%;
+
   margin-bottom: 4em;
+  position: relative;
+  z-index: 1;
 }
 
 .slides-items {
@@ -324,18 +333,13 @@ const props = defineProps<{
 
 .content-wrapper__description {
   display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  max-height: 10.5rem;
 
-  -webkit-box-orient: vertical;
-  font-size: 1rem;
+  margin: 1rem 0;
+  font-size: 1.25rem;
   font-weight: 400;
-  -webkit-line-clamp: 6;
-  width: 24em;
+  width: 19em;
 
-  padding: 1em 0;
-  text-overflow: ellipsis;
+  padding: 1em;
 }
 
 .middle-buttons {
@@ -348,7 +352,7 @@ const props = defineProps<{
   align-items: center;
 }
 .middle-buttons__updated {
-  padding: 0.5em 0 0.5em 9em;
+  padding: 0.5em 2em 0.5em 6em;
   font-size: 1em;
   color: white;
 }

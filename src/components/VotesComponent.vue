@@ -127,6 +127,14 @@ const handleItemClick = (item: string) => {
   selectedGrid.value = item
   isOpen.value = false
 }
+// Add Ellipsis to texts
+const addEllipsis = (text: string, max: number) => {
+  if (text.length > max) {
+    return text.slice(0, max) + '...'
+  } else {
+    return text
+  }
+}
 </script>
 <template>
   <div class="main-title-wrapper">
@@ -164,6 +172,7 @@ const handleItemClick = (item: string) => {
     :updateVotes="updateVotes"
     :resetVotes="resetVotes"
     :getPercentage="getPercentage"
+    :addEllipsis="addEllipsis"
   >
   </GridComponent>
   -->
@@ -180,6 +189,7 @@ const handleItemClick = (item: string) => {
     :updateVotes="updateVotes"
     :resetVotes="resetVotes"
     :getPercentage="getPercentage"
+    :addEllipsis="addEllipsis"
   >
   </ListComponent>
   <div class="slider">
@@ -505,18 +515,13 @@ const handleItemClick = (item: string) => {
 
 .content-wrapper__description {
   display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  max-height: 10.5rem;
+
   margin: 1rem 0;
-  -webkit-box-orient: vertical;
   font-size: 1.25rem;
   font-weight: 400;
-  -webkit-line-clamp: 6;
   width: 19em;
 
   padding: 1em;
-  text-overflow: ellipsis;
 }
 
 .middle-buttons {
