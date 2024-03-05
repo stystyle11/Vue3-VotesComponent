@@ -194,7 +194,7 @@ const props = defineProps<{
 }
 
 .slides-items {
-  width: 100%;
+  width: 98%;
 
   height: 100%;
 

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 import { useVotingStore } from '@/stores/voting'
 
@@ -138,14 +138,44 @@ const addEllipsis = (text: string, max: number) => {
 // Logic to display either mobile or Grid or List
 
 const isMobile = ref<boolean>(false)
+const windowWidth = ref(window.innerWidth)
 const isGrid = ref<boolean>(false)
-const isList = ref<boolean>(false)
+// Maybe just toogle isGrid
+//const isList = ref<boolean>(false)
+const checkStartWidth = () => {
+  if (windowWidth.value < 768) {
+    isMobile.value = true
+  } else {
+    isMobile.value = false
+    isGrid.value = true
+  }
+}
+checkStartWidth()
+// Create a watch effect to observe changes in the width of the window
+watchEffect(() => {
+  const watchResize = () => {
+    windowWidth.value = window.innerWidth
+    if (windowWidth.value < 768) {
+      isMobile.value = true
+    } else {
+      isMobile.value = false
+      isGrid.value = true
+    }
+    console.log(windowWidth.value)
+  }
+  // add the listener to resize event
+  window.addEventListener('resize', watchResize)
+  // remove the listener
+  return () => {
+    window.removeEventListener('resize', watchResize)
+  }
+})
 </script>
 <template>
   <div class="main-title-wrapper">
     <h1 class="main-title">Previous Rulings</h1>
     <!-- DropDown to the right-->
-    <div class="dropdown">
+    <div v-if="!isMobile" class="dropdown">
       <button @click="toggleDropdown" class="dropdown-button">
         <div class="dropdown-toggle">
           <div class="dropdown-title-toogle">
@@ -165,6 +195,7 @@ const isList = ref<boolean>(false)
   </div>
   <!-- Grid Logic-->
   <GridComponent
+    v-if="!isMobile && isGrid"
     :votingData="votingData"
     :compareDates="compareDates"
     :checkMostVotesSymbol="checkMostVotesSymbol"
@@ -182,6 +213,7 @@ const isList = ref<boolean>(false)
   </GridComponent>
   <!-- List Logic-->
   <ListComponent
+    v-else-if="!isMobile && !isGrid"
     :votingData="votingData"
     :compareDates="compareDates"
     :checkMostVotesSymbol="checkMostVotesSymbol"
@@ -198,7 +230,7 @@ const isList = ref<boolean>(false)
   >
   </ListComponent>
   <!-- Mobile logic-->
-  <div class="slider">
+  <div v-if="isMobile" class="slider">
     <div class="slides">
       <div
         v-for="(vote, index) in votingData"
@@ -538,8 +570,9 @@ const isList = ref<boolean>(false)
   padding-left: 4em;
   height: fit-content;
   align-items: center;
-  margin-bottom: 2em;
+  margin-bottom: 4em;
 }
+
 .middle-buttons__updated {
   padding: 0.5em 0 0.5em 9em;
   font-size: 1em;
