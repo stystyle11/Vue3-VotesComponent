@@ -123,10 +123,6 @@ const toggleDropdown = () => {
   isOpen.value = !isOpen.value
 }
 
-const handleItemClick = (item: string) => {
-  selectedGrid.value = item
-  isOpen.value = false
-}
 // Add Ellipsis to texts title and description
 const addEllipsis = (text: string, max: number) => {
   if (text.length > max) {
@@ -142,13 +138,21 @@ const windowWidth = ref(window.innerWidth)
 const isGrid = ref<boolean>(false)
 // Maybe just toogle isGrid
 //const isList = ref<boolean>(false)
+
+const handleItemClick = (item: string) => {
+  selectedGrid.value = item
+  isOpen.value = false
+  return selectedGrid.value === 'Grid'
+    ? (isGrid.value = true)
+    : (isGrid.value = false)
+}
 const checkStartWidth = () => {
-  if (windowWidth.value < 768) {
-    isMobile.value = true
-  } else {
-    isMobile.value = false
-    isGrid.value = true
-  }
+  return (
+    windowWidth.value < 768
+      ? (isMobile.value = true)
+      : (isMobile.value = false),
+    (isGrid.value = true)
+  )
 }
 checkStartWidth()
 // Create a watch effect to observe changes in the width of the window
@@ -157,11 +161,12 @@ watchEffect(() => {
     windowWidth.value = window.innerWidth
     if (windowWidth.value < 768) {
       isMobile.value = true
+    } else if (windowWidth.value > 768 && isGrid.value) {
+      isMobile.value = false
     } else {
       isMobile.value = false
-      isGrid.value = true
+      isGrid.value = false
     }
-    console.log(windowWidth.value)
   }
   // add the listener to resize event
   window.addEventListener('resize', watchResize)
