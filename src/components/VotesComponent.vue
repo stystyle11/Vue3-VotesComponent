@@ -113,6 +113,9 @@ const updateVotes = (index: number) => {
 // When the user clicks on the vote again button, his vote on that card will be reset to 0
 const resetVotes = (index: number) => {
   votesCasted.value[index] = 0
+  activePositiveButtonIndex.value = null
+  activeNegativeButtonIndex.value = null
+  allowToVote.value = null
 }
 // DropDown Logic
 
