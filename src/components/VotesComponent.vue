@@ -217,10 +217,14 @@ const addEllipsis = (text: string, max: number) => {
               <div v-else class="top-items-top">
                 <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
               </div>
-              <h2 class="content-wrapper__title-top">{{ vote.name }}</h2>
+              <h2 class="content-wrapper__title-top">
+                {{ addEllipsis(vote.name, 22) }}
+              </h2>
             </div>
             <!-- Vote Description-->
-            <p class="content-wrapper__description">{{ vote.description }}</p>
+            <p class="content-wrapper__description">
+              {{ addEllipsis(vote.description, 60) }}
+            </p>
             <!-- Votes Update-->
 
             <p v-if="!votesCasted[index]" class="middle-buttons__updated">

@@ -41,7 +41,7 @@ const props = defineProps<{
           class="content-wrapper__background-top"
           :style="{
             backgroundImage: `url(${vote.picture})`,
-            backgroundSize: '30%',
+            backgroundSize: '35%',
             backgroundRepeat: 'no-repeat'
           }"
         >
@@ -204,11 +204,11 @@ const props = defineProps<{
 .wrapper-name-update {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  /* align-items: center; */
   width: 90%;
-
   position: relative;
   z-index: 1;
+  padding: 0.5em 0;
 }
 .newContent::after {
   content: '';
@@ -278,7 +278,7 @@ const props = defineProps<{
 
 .content-wrapper__title-top {
   margin: 0;
-  font-size: 2rem;
+  font-size: 1.5rem;
   font-weight: 400;
   line-height: 1;
 
@@ -352,7 +352,7 @@ const props = defineProps<{
   align-items: center;
 }
 .middle-buttons__updated {
-  padding: 0.5em 2em 0.5em 6em;
+  margin: 0;
   font-size: 1em;
   color: white;
 }
