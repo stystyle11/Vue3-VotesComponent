@@ -40,7 +40,7 @@ const props = defineProps<{
           class="content-wrapper__background-top"
           :style="{
             backgroundImage: `url(${vote.picture})`,
-            backgroundSize: '35%',
+            backgroundSize: '24%',
             backgroundRepeat: 'no-repeat'
           }"
         >
