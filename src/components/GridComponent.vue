@@ -117,7 +117,7 @@ const props = defineProps<{
             </div>
             <div
               :style="{
-                paddingLeft: '7.5em'
+                paddingLeft: '7.2em'
               }"
               v-else
               class="middle-items"
