@@ -2,7 +2,9 @@
 import { ref, computed } from 'vue'
 
 import { useVotingStore } from '@/stores/voting'
+
 import { storeToRefs } from 'pinia'
+import GridComponent from '@/components/GridComponent.vue'
 //import type { Votes } from '@/types/VotesData'
 
 interface Votes {
@@ -110,10 +112,59 @@ const updateVotes = (index: number) => {
 const resetVotes = (index: number) => {
   votesCasted.value[index] = 0
 }
+// DropDown Logic
+
+const isOpen = ref(false)
+const selectedGrid = ref<string>('Grid')
+
+const toggleDropdown = () => {
+  isOpen.value = !isOpen.value
+}
+
+const handleItemClick = (item: string) => {
+  selectedGrid.value = item
+  isOpen.value = false
+}
 </script>
 <template>
-  <div class="slider">
+  <div class="main-title-wrapper">
     <h1 class="main-title">Previous Rulings</h1>
+    <!-- Item to the right-->
+    <div class="dropdown">
+      <button @click="toggleDropdown" class="dropdown-button">
+        <div class="dropdown-toggle">
+          <div class="dropdown-title-toogle">
+            {{ selectedGrid }}
+          </div>
+          <div class="dropdown-icon-toogle">
+            <i class="fas fa-caret-down"></i>
+          </div>
+        </div>
+      </button>
+
+      <div v-if="isOpen" class="dropdown-menu">
+        <p @click="handleItemClick('Grid')">Grid</p>
+        <p @click="handleItemClick('List')">List</p>
+      </div>
+    </div>
+  </div>
+  <!-- Mobile logic-->
+  <GridComponent
+    :votingData="votingData"
+    :compareDates="compareDates"
+    :checkMostVotesSymbol="checkMostVotesSymbol"
+    :togglePositiveButtonActive="togglePositiveButtonActive"
+    :toggleNegativeButtonActive="toggleNegativeButtonActive"
+    :votesCasted="votesCasted"
+    :activePositiveButtonIndex="activePositiveButtonIndex"
+    :activeNegativeButtonIndex="activeNegativeButtonIndex"
+    :allowToVote="allowToVote"
+    :updateVotes="updateVotes"
+    :resetVotes="resetVotes"
+    :getPercentage="getPercentage"
+  >
+  </GridComponent>
+  <div class="slider">
     <div class="slides">
       <div
         v-for="(vote, index) in votingData"
@@ -138,14 +189,10 @@ const resetVotes = (index: number) => {
               <div v-else class="top-items-top">
                 <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
               </div>
-              <h2 class="content-wrapper__title-top">
-                {{ vote.name }}
-              </h2>
+              <h2 class="content-wrapper__title-top">{{ vote.name }}</h2>
             </div>
             <!-- Vote Description-->
-            <p class="content-wrapper__description">
-              {{ vote.description }}
-            </p>
+            <p class="content-wrapper__description">{{ vote.description }}</p>
             <!-- Votes Update-->
 
             <p v-if="!votesCasted[index]" class="middle-buttons__updated">
@@ -192,7 +239,7 @@ const resetVotes = (index: number) => {
               </div>
               <div
                 :style="{
-                  paddingLeft: '10em'
+                  paddingLeft: '7em'
                 }"
                 v-else
                 class="middle-items"
@@ -267,6 +314,64 @@ const resetVotes = (index: number) => {
 </template>
 
 <style scoped>
+.main-title-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown {
+  position: relative;
+}
+.dropdown-toggle {
+  background-color: #fff;
+  border: 3px solid #000;
+  padding: 0.5em;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown-button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  min-width: 12.5em;
+}
+
+.dropdown-title-toogle {
+  padding: 0 4em;
+}
+.dropdown-icon-toogle {
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  border-left: 3px solid black;
+  border-right: 2px solid black;
+  border-top: none;
+  width: 97%;
+  z-index: 10;
+}
+
+.dropdown-menu p {
+  margin: 0;
+  padding: 0;
+
+  padding: 0.5em 1em;
+  background-color: white;
+  border-bottom: 3px solid black;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f8f9fa;
+}
 .slider {
   height: 37em;
   overflow: hidden;
@@ -326,9 +431,10 @@ const resetVotes = (index: number) => {
 }
 .content-wrapper__title-top {
   margin: 0;
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 400;
   line-height: 1;
+  padding-left: 0.4em;
 
   color: var(--color-white);
 }
@@ -400,9 +506,10 @@ const resetVotes = (index: number) => {
   width: 85%;
   font-size: 1rem;
 
-  padding-left: 3em;
+  padding-left: 4em;
   height: fit-content;
   align-items: center;
+  margin-bottom: 2em;
 }
 .middle-buttons__updated {
   padding: 0.5em 0 0.5em 9em;
@@ -433,18 +540,18 @@ const resetVotes = (index: number) => {
 }
 
 .middle-items img[alt='thumbs up'] {
-  padding: 1em;
+  padding: 0.6em;
 }
 .top-items-top img[alt='thumbs up'] {
-  padding: 1em;
+  padding: 0.6em;
   background-color: rgba(var(--color-green-positive), 0.8);
 }
 
 .middle-items img[alt='thumbs down'] {
-  padding: 1em;
+  padding: 0.6em;
 }
 .top-items-top img[alt='thumbs down'] {
-  padding: 1em;
+  padding: 0.6em;
   background-color: rgba(var(--color-yellow-negative), 0.8);
 }
 
