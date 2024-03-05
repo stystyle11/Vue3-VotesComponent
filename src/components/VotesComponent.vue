@@ -147,7 +147,6 @@ const checkStartWidth = () => {
     isMobile.value = false
     isGrid.value = true
     desktopColumns.value = 2
-    console.log('verificando', desktopColumns.value)
   } else {
     desktopColumns.value = 3
     isGrid.value = true
@@ -163,7 +162,7 @@ watchEffect(() => {
       desktopColumns.value = 2
     } else if (windowWidth.value > 768 && windowWidth.value < 1025) {
       isMobile.value = false
-
+      console.log('verificando', desktopColumns.value)
       desktopColumns.value = 2
     } else {
       isMobile.value = false
