@@ -154,7 +154,7 @@ const props = defineProps<{
   display: flex;
   justify-content: space-between;
   /* align-items: center; */
-  width: 90%;
+  width: 95%;
   position: relative;
   z-index: 1;
   padding: 0.5em 0;
