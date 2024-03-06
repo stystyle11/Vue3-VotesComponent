@@ -7,6 +7,7 @@ import { storeToRefs } from 'pinia'
 import GridComponent from '@/components/GridComponent.vue'
 
 import ListComponent from '@/components/ListComponent.vue'
+import VotingStatsComponent from '@/components/VotingStatsComponent.vue'
 //import type { Votes } from '@/types/VotesData'
 
 // Data from Pinia
@@ -141,9 +142,9 @@ const handleItemClick = (item: string) => {
     : (isGrid.value = false)
 }
 const checkStartWidth = () => {
-  if (windowWidth.value < 768) {
+  if (windowWidth.value <= 768) {
     isMobile.value = true
-  } else if (windowWidth.value > 768 && windowWidth.value < 1025) {
+  } else if (windowWidth.value > 768 && windowWidth.value <= 1024) {
     isMobile.value = false
     isGrid.value = true
     desktopColumns.value = 2
@@ -157,10 +158,10 @@ checkStartWidth()
 watchEffect(() => {
   const watchResize = () => {
     windowWidth.value = window.innerWidth
-    if (windowWidth.value < 768) {
+    if (windowWidth.value <= 768) {
       isMobile.value = true
       desktopColumns.value = 2
-    } else if (windowWidth.value > 768 && windowWidth.value < 1025) {
+    } else if (windowWidth.value > 768 && windowWidth.value <= 1024) {
       isMobile.value = false
       console.log('verificando', desktopColumns.value)
       desktopColumns.value = 2
@@ -326,63 +327,12 @@ watchEffect(() => {
                 </button>
               </div>
             </div>
-            <!-- Voting Stats-->
-            <div class="voting-stats">
-              <div
-                class="voting-positive"
-                :style="{
-                  width:
-                    getPercentage(
-                      vote.votes.negative,
-                      vote.votes.positive,
-                      vote.votes.positive
-                    ) + '%'
-                }"
-              >
-                <div class="flex-votes">
-                  <div class="flex-positive">
-                    <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
-                  </div>
-                  <div class="flex-positive">
-                    {{
-                      getPercentage(
-                        vote.votes.negative,
-                        vote.votes.positive,
-                        vote.votes.positive
-                      ) + '%'
-                    }}
-                  </div>
-                </div>
-              </div>
-
-              <div
-                class="voting-negative"
-                :style="{
-                  width:
-                    getPercentage(
-                      vote.votes.negative,
-                      vote.votes.positive,
-                      vote.votes.negative
-                    ) + '%'
-                }"
-              >
-                <div class="flex-votes">
-                  <div class="flex-negative">
-                    {{
-                      getPercentage(
-                        vote.votes.negative,
-                        vote.votes.positive,
-                        vote.votes.negative
-                      ) + '%'
-                    }}
-                  </div>
-
-                  <div class="flex-negative">
-                    <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
-                  </div>
-                </div>
-              </div>
-            </div>
+            <!--Voting stats-->
+            <VotingStatsComponent
+              :votes="vote.votes"
+              :getPercentage="getPercentage"
+            >
+            </VotingStatsComponent>
           </div>
         </div>
       </div>

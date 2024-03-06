@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import VotingStatsComponent from '@/components/VotingStatsComponent.vue'
 interface Votes {
   name: string
   description: string
@@ -24,7 +25,7 @@ const props = defineProps<{
   updateVotes: Function
   resetVotes: Function
   getPercentage: Function
-  addEllipsis: Funtion
+  addEllipsis: Function
 }>()
 </script>
 
@@ -130,62 +131,11 @@ const props = defineProps<{
             </div>
           </div>
           <!-- Voting Stats-->
-          <div class="voting-stats">
-            <div
-              class="voting-positive"
-              :style="{
-                width:
-                  getPercentage(
-                    vote.votes.negative,
-                    vote.votes.positive,
-                    vote.votes.positive
-                  ) + '%'
-              }"
-            >
-              <div class="flex-votes">
-                <div class="flex-positive">
-                  <img src="@/assets/img/thumbs-up.svg" alt="thumbs up" />
-                </div>
-                <div class="flex-positive">
-                  {{
-                    getPercentage(
-                      vote.votes.negative,
-                      vote.votes.positive,
-                      vote.votes.positive
-                    ) + '%'
-                  }}
-                </div>
-              </div>
-            </div>
-
-            <div
-              class="voting-negative"
-              :style="{
-                width:
-                  getPercentage(
-                    vote.votes.negative,
-                    vote.votes.positive,
-                    vote.votes.negative
-                  ) + '%'
-              }"
-            >
-              <div class="flex-votes">
-                <div class="flex-negative">
-                  {{
-                    getPercentage(
-                      vote.votes.negative,
-                      vote.votes.positive,
-                      vote.votes.negative
-                    ) + '%'
-                  }}
-                </div>
-
-                <div class="flex-negative">
-                  <img src="@/assets/img/thumbs-down.svg" alt="thumbs down" />
-                </div>
-              </div>
-            </div>
-          </div>
+          <VotingStatsComponent
+            :votes="vote.votes"
+            :getPercentage="getPercentage"
+          >
+          </VotingStatsComponent>
         </div>
       </div>
     </div>
